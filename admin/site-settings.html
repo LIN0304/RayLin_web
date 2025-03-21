@@ -1,1 +1,845 @@
-$file:/users/raylin/desktop/personal-website/admin/site-settings.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Settings - Ray Lin's Admin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --text-color: #333;
+            --background-color: #f5f7fa;
+            --sidebar-bg: #ffffff;
+            --card-background: #fff;
+            --border-color: #e1e4e8;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --border-radius: 8px;
+            --font-family: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu h3 {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar-menu li a:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu li a.active {
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .sidebar-menu li i {
+            margin-right: 0.75rem;
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .content-header h1 {
+            font-size: 1.75rem;
+        }
+
+        .toggle-sidebar {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #3a7dca;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .settings-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .tab-button {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .settings-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: var(--font-family);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .color-input {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .color-input input[type="color"] {
+            width: 60px;
+            height: 40px;
+            padding: 0;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-control {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle-label {
+            font-weight: 500;
+        }
+
+        .form-actions {
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .color-preview {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .save-indicator {
+            display: none;
+            align-items: center;
+            color: #27ae60;
+            margin-right: auto;
+        }
+
+        .save-indicator.show {
+            display: flex;
+        }
+
+        .save-indicator i {
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .toggle-sidebar {
+                display: block;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="toggle-sidebar">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>Ray Lin Admin</h1>
+        </div>
+        
+        <div class="sidebar-menu">
+            <h3>Main</h3>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="gpts.html"><i class="fas fa-robot"></i> GPTs</a></li>
+                <li><a href="demos.html"><i class="fas fa-vial"></i> AI Demos</a></li>
+                <li><a href="blog.html"><i class="fas fa-blog"></i> Blog Posts</a></li>
+                <li><a href="projects.html"><i class="fas fa-project-diagram"></i> Projects</a></li>
+                <li><a href="experience.html"><i class="fas fa-briefcase"></i> Experience</a></li>
+            </ul>
+            
+            <h3>Media</h3>
+            <ul>
+                <li><a href="media.html"><i class="fas fa-images"></i> Media Library</a></li>
+                <li><a href="uploads.html"><i class="fas fa-upload"></i> Upload Files</a></li>
+            </ul>
+            
+            <h3>Settings</h3>
+            <ul>
+                <li><a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a></li>
+                <li><a href="site-settings.html" class="active"><i class="fas fa-cog"></i> Site Settings</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1>Site Settings</h1>
+            <div></div>
+        </div>
+        
+        <div class="settings-tabs">
+            <button class="tab-button active" data-tab="general">General</button>
+            <button class="tab-button" data-tab="appearance">Appearance</button>
+            <button class="tab-button" data-tab="seo">SEO</button>
+            <button class="tab-button" data-tab="advanced">Advanced</button>
+        </div>
+        
+        <div class="tab-content active" id="general">
+            <div class="settings-card">
+                <h3 class="section-title">Site Information</h3>
+                <form id="site-info-form">
+                    <div class="form-group">
+                        <label for="site-title">Site Title</label>
+                        <input type="text" id="site-title" name="site-title" value="Ray Lin - Personal Website">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="site-tagline">Tagline</label>
+                        <input type="text" id="site-tagline" name="site-tagline" value="AI & Blockchain Developer">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="site-description">Site Description</label>
+                        <textarea id="site-description" name="site-description">The personal website of Ray Lin, showcasing my work in AI, blockchain, and web development.</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact-email">Contact Email</label>
+                        <input type="email" id="contact-email" name="contact-email" value="raylin@example.com">
+                    </div>
+                </form>
+            </div>
+            
+            <div class="settings-card">
+                <h3 class="section-title">Social Media</h3>
+                <form id="social-form">
+                    <div class="form-group">
+                        <label for="linkedin">LinkedIn</label>
+                        <input type="url" id="linkedin" name="linkedin" value="https://www.linkedin.com/in/hsu-jui-lin-50b82b216/">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="github">GitHub</label>
+                        <input type="url" id="github" name="github" value="https://github.com/LIN0304">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="twitter">X (Twitter)</label>
+                        <input type="url" id="twitter" name="twitter" value="https://x.com/RayLin_AI">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telegram">Telegram</label>
+                        <input type="url" id="telegram" name="telegram" value="https://t.me/RayLin_bnb">
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="appearance">
+            <div class="settings-card">
+                <h3 class="section-title">Theme Colors</h3>
+                <form id="colors-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="primary-color">Primary Color</label>
+                            <div class="color-input">
+                                <input type="color" id="primary-color" name="primary-color" value="#4a90e2">
+                                <input type="text" id="primary-color-text" name="primary-color-text" value="#4a90e2">
+                                <div class="color-preview" style="background-color: #4a90e2;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="secondary-color">Secondary Color</label>
+                            <div class="color-input">
+                                <input type="color" id="secondary-color" name="secondary-color" value="#6c7a89">
+                                <input type="text" id="secondary-color-text" name="secondary-color-text" value="#6c7a89">
+                                <div class="color-preview" style="background-color: #6c7a89;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="text-color">Text Color</label>
+                            <div class="color-input">
+                                <input type="color" id="text-color" name="text-color" value="#373f51">
+                                <input type="text" id="text-color-text" name="text-color-text" value="#373f51">
+                                <div class="color-preview" style="background-color: #373f51;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="bg-color">Background Color</label>
+                            <div class="color-input">
+                                <input type="color" id="bg-color" name="bg-color" value="#f4f5f7">
+                                <input type="text" id="bg-color-text" name="bg-color-text" value="#f4f5f7">
+                                <div class="color-preview" style="background-color: #f4f5f7;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="settings-card">
+                <h3 class="section-title">Typography</h3>
+                <form id="typography-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="heading-font">Heading Font</label>
+                            <select id="heading-font" name="heading-font">
+                                <option value="Inter" selected>Inter</option>
+                                <option value="Roboto">Roboto</option>
+                                <option value="Open Sans">Open Sans</option>
+                                <option value="Lato">Lato</option>
+                                <option value="Montserrat">Montserrat</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="body-font">Body Font</label>
+                            <select id="body-font" name="body-font">
+                                <option value="Inter" selected>Inter</option>
+                                <option value="Roboto">Roboto</option>
+                                <option value="Open Sans">Open Sans</option>
+                                <option value="Lato">Lato</option>
+                                <option value="Montserrat">Montserrat</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="seo">
+            <div class="settings-card">
+                <h3 class="section-title">SEO Settings</h3>
+                <form id="seo-form">
+                    <div class="form-group">
+                        <label for="meta-title">Default Meta Title</label>
+                        <input type="text" id="meta-title" name="meta-title" value="Ray Lin - AI & Blockchain Developer">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="meta-description">Default Meta Description</label>
+                        <textarea id="meta-description" name="meta-description">Explore Ray Lin's portfolio of AI and blockchain projects, GPTs, and technical blog posts. Specializing in custom GPTs and blockchain technologies.</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="meta-keywords">Default Meta Keywords</label>
+                        <input type="text" id="meta-keywords" name="meta-keywords" value="AI, blockchain, GPTs, Web3, DeFi, prompt engineering, Ray Lin">
+                    </div>
+                </form>
+            </div>
+            
+            <div class="settings-card">
+                <h3 class="section-title">Social Sharing</h3>
+                <form id="social-sharing-form">
+                    <div class="form-group">
+                        <label for="og-title">Open Graph Title</label>
+                        <input type="text" id="og-title" name="og-title" value="Ray Lin - AI & Blockchain Developer">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="og-description">Open Graph Description</label>
+                        <textarea id="og-description" name="og-description">Explore Ray Lin's portfolio of AI and blockchain projects, GPTs, and technical blog posts.</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="og-image">Open Graph Image</label>
+                        <input type="text" id="og-image" name="og-image" value="https://raylin.com/images/og-image.jpg">
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="advanced">
+            <div class="settings-card">
+                <h3 class="section-title">Homepage Settings</h3>
+                <form id="homepage-form">
+                    <div class="form-group toggle-control">
+                        <span class="toggle-label">Show GPTs on Homepage</span>
+                        <label class="switch">
+                            <input type="checkbox" id="show-gpts" name="show-gpts" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group toggle-control">
+                        <span class="toggle-label">Show Latest Blog Posts</span>
+                        <label class="switch">
+                            <input type="checkbox" id="show-blog" name="show-blog" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group toggle-control">
+                        <span class="toggle-label">Show Projects</span>
+                        <label class="switch">
+                            <input type="checkbox" id="show-projects" name="show-projects" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group toggle-control">
+                        <span class="toggle-label">Show Experience</span>
+                        <label class="switch">
+                            <input type="checkbox" id="show-experience" name="show-experience" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="settings-card">
+                <h3 class="section-title">Cache Settings</h3>
+                <form id="cache-form">
+                    <div class="form-group toggle-control">
+                        <span class="toggle-label">Enable Page Caching</span>
+                        <label class="switch">
+                            <input type="checkbox" id="enable-cache" name="enable-cache" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cache-time">Cache Expiration (minutes)</label>
+                        <input type="number" id="cache-time" name="cache-time" value="60" min="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="button" class="btn btn-secondary" id="clear-cache-btn">
+                            <i class="fas fa-trash-alt"></i> Clear Cache
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="form-actions" id="settings-actions">
+            <div class="save-indicator" id="save-indicator">
+                <i class="fas fa-check-circle"></i> Changes saved successfully
+            </div>
+            <button type="button" class="btn btn-secondary" id="cancel-settings-btn">Cancel</button>
+            <button type="button" class="btn" id="save-settings-btn">Save Changes</button>
+        </div>
+    </main>
+
+    <!-- Script to handle save changes -->
+    <script src="js/save-changes.js"></script>
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!sessionStorage.getItem('isLoggedIn')) {
+                window.location.href = 'index.html';
+            }
+            
+            initSettingsPage();
+        });
+        
+        // Toggle sidebar on mobile
+        const toggleBtn = document.querySelector('.toggle-sidebar');
+        const sidebar = document.querySelector('.sidebar');
+        
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+        
+        // Handle responsive layout
+        function checkWidth() {
+            if (window.innerWidth <= 992) {
+                toggleBtn.style.display = 'flex';
+            } else {
+                toggleBtn.style.display = 'none';
+                sidebar.classList.remove('active');
+            }
+        }
+        
+        window.addEventListener('resize', checkWidth);
+        checkWidth();
+        
+        // Initialize settings page functionality
+        function initSettingsPage() {
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // Color pickers
+            const colorInputs = document.querySelectorAll('input[type="color"]');
+            
+            // Form submissions
+            const saveBtn = document.getElementById('save-settings-btn');
+            const cancelBtn = document.getElementById('cancel-settings-btn');
+            const clearCacheBtn = document.getElementById('clear-cache-btn');
+            const saveIndicator = document.getElementById('save-indicator');
+            
+            // Tab switching
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Show corresponding tab content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Handle color picker changes
+            colorInputs.forEach(input => {
+                const textInput = input.nextElementSibling;
+                const preview = textInput.nextElementSibling;
+                
+                input.addEventListener('input', function() {
+                    // Update text input
+                    textInput.value = this.value;
+                    // Update color preview
+                    preview.style.backgroundColor = this.value;
+                });
+                
+                textInput.addEventListener('input', function() {
+                    // Update color picker
+                    input.value = this.value;
+                    // Update color preview
+                    preview.style.backgroundColor = this.value;
+                });
+            });
+            
+            // Handle clear cache button
+            clearCacheBtn.addEventListener('click', function() {
+                // In a real app, we'd use AJAX to call the server to clear cache
+                fetch('save-changes.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'clear_cache'
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Cache cleared successfully!');
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Failed to clear cache. See console for details.');
+                });
+            });
+            
+            // Save settings
+            saveBtn.addEventListener('click', function() {
+                // Gather all forms from the active tab
+                const activeTab = document.querySelector('.tab-content.active');
+                const forms = activeTab.querySelectorAll('form');
+                
+                // Save each form
+                forms.forEach(form => {
+                    if (form.id) {
+                        saveForm(form.id);
+                    }
+                });
+            });
+            
+            // Helper function to save form data
+            function saveForm(formId) {
+                const form = document.getElementById(formId);
+                if (!form) return;
+                
+                // Get form data
+                const formData = {};
+                const inputs = form.querySelectorAll('input, textarea, select');
+                inputs.forEach(input => {
+                    if (input.type === 'checkbox') {
+                        formData[input.name || input.id] = input.checked;
+                    } else {
+                        formData[input.name || input.id] = input.value;
+                    }
+                });
+                
+                // Send to server
+                fetch('save-changes.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        formId: formId,
+                        formData: formData
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success indicator
+                        saveIndicator.classList.add('show');
+                        setTimeout(() => {
+                            saveIndicator.classList.remove('show');
+                        }, 3000);
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Failed to save settings. See console for details.');
+                });
+            }
+            
+            // Cancel changes
+            cancelBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to discard all changes?')) {
+                    window.location.reload();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
