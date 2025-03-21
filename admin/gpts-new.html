@@ -1,1 +1,629 @@
-$file:/users/raylin/desktop/personal-website/admin/gpts-new.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New GPT - Ray Lin's Admin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --text-color: #333;
+            --background-color: #f5f7fa;
+            --sidebar-bg: #ffffff;
+            --card-background: #fff;
+            --border-color: #e1e4e8;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --border-radius: 8px;
+            --font-family: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu h3 {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar-menu li a:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu li a.active {
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .sidebar-menu li i {
+            margin-right: 0.75rem;
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .content-header h1 {
+            font-size: 1.75rem;
+        }
+
+        .toggle-sidebar {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #3a7dca;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .gpt-form {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: var(--font-family);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .image-preview {
+            margin-top: 1rem;
+        }
+
+        .image-preview-container {
+            width: 100%;
+            height: 220px;
+            background-color: var(--background-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .image-preview-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .image-preview-placeholder {
+            color: #666;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .image-preview-placeholder i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #999;
+        }
+
+        .form-actions {
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .preview-container {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .preview-title {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .gpt-card-preview {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        .gpt-image-preview {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+            background-color: var(--background-color);
+        }
+
+        .gpt-image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gpt-badge-preview {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--text-color);
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .gpt-details-preview {
+            padding: 1.25rem;
+        }
+
+        .gpt-title-preview {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gpt-description-preview {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .gpt-url-preview {
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            word-break: break-all;
+        }
+
+        .gpt-actions-preview {
+            display: flex;
+            justify-content: center;
+        }
+
+        .gpt-actions-preview .btn {
+            width: 100%;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .toggle-sidebar {
+                display: block;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="toggle-sidebar">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>Ray Lin Admin</h1>
+        </div>
+        
+        <div class="sidebar-menu">
+            <h3>Main</h3>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="gpts.html" class="active"><i class="fas fa-robot"></i> GPTs</a></li>
+                <li><a href="demos.html"><i class="fas fa-vial"></i> AI Demos</a></li>
+                <li><a href="blog.html"><i class="fas fa-blog"></i> Blog Posts</a></li>
+                <li><a href="projects.html"><i class="fas fa-project-diagram"></i> Projects</a></li>
+                <li><a href="experience.html"><i class="fas fa-briefcase"></i> Experience</a></li>
+            </ul>
+            
+            <h3>Media</h3>
+            <ul>
+                <li><a href="media.html"><i class="fas fa-images"></i> Media Library</a></li>
+                <li><a href="uploads.html"><i class="fas fa-upload"></i> Upload Files</a></li>
+            </ul>
+            
+            <h3>Settings</h3>
+            <ul>
+                <li><a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Site Settings</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1>Add New GPT</h1>
+            <a href="gpts.html" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to All GPTs
+            </a>
+        </div>
+        
+        <div class="gpt-form">
+            <h2 class="form-title">GPT Details</h2>
+            <form id="add-gpt-form">
+                <div class="form-group">
+                    <label for="gpt-title">Title *</label>
+                    <input type="text" id="gpt-title" name="gpt-title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gpt-description">Description *</label>
+                    <textarea id="gpt-description" name="gpt-description" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gpt-url">URL</label>
+                    <input type="url" id="gpt-url" name="gpt-url" placeholder="https://chatgpt.com/g/...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="gpt-image">Image *</label>
+                    <input type="file" id="gpt-image" name="gpt-image" accept="image/*" required>
+                    <div class="image-preview">
+                        <div class="image-preview-container" id="image-preview-container">
+                            <div class="image-preview-placeholder" id="image-preview-placeholder">
+                                <i class="fas fa-image"></i>
+                                <p>No image selected</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gpt-featured">Featured</label>
+                    <select id="gpt-featured" name="gpt-featured">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gpt-badge">Badge Text (optional)</label>
+                    <input type="text" id="gpt-badge" name="gpt-badge" placeholder="e.g., New, Featured, etc.">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="preview-btn">Preview</button>
+                    <button type="submit" class="btn">Save GPT</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="preview-container" id="preview-container" style="display: none;">
+            <h2 class="preview-title">GPT Preview</h2>
+            <div class="gpt-card-preview">
+                <div class="gpt-image-preview" id="gpt-image-preview">
+                    <div class="gpt-badge-preview" id="gpt-badge-preview"></div>
+                </div>
+                <div class="gpt-details-preview">
+                    <h3 class="gpt-title-preview" id="gpt-title-preview">GPT Title</h3>
+                    <p class="gpt-description-preview" id="gpt-description-preview">GPT description will appear here.</p>
+                    <div class="gpt-url-preview" id="gpt-url-preview">https://chatgpt.com/g/</div>
+                    <div class="gpt-actions-preview">
+                        <a href="#" class="btn">Try GPT</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!sessionStorage.getItem('isLoggedIn')) {
+                window.location.href = 'index.html';
+            }
+            
+            initGptForm();
+        });
+        
+        // Toggle sidebar on mobile
+        const toggleBtn = document.querySelector('.toggle-sidebar');
+        const sidebar = document.querySelector('.sidebar');
+        
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+        
+        // Handle responsive layout
+        function checkWidth() {
+            if (window.innerWidth <= 992) {
+                toggleBtn.style.display = 'flex';
+            } else {
+                toggleBtn.style.display = 'none';
+                sidebar.classList.remove('active');
+            }
+        }
+        
+        window.addEventListener('resize', checkWidth);
+        checkWidth();
+        
+        // Initialize GPT form functionality
+        function initGptForm() {
+            const form = document.getElementById('add-gpt-form');
+            const previewBtn = document.getElementById('preview-btn');
+            const previewContainer = document.getElementById('preview-container');
+            const imageInput = document.getElementById('gpt-image');
+            const imagePreviewContainer = document.getElementById('image-preview-container');
+            const imagePreviewPlaceholder = document.getElementById('image-preview-placeholder');
+            
+            // Handle image preview
+            imageInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        // Clear placeholder
+                        imagePreviewPlaceholder.style.display = 'none';
+                        
+                        // Check if an image already exists
+                        let previewImage = imagePreviewContainer.querySelector('img');
+                        if (!previewImage) {
+                            previewImage = document.createElement('img');
+                            imagePreviewContainer.appendChild(previewImage);
+                        }
+                        
+                        // Set the image source
+                        previewImage.src = e.target.result;
+                        
+                        // Also update the preview card image if visible
+                        const gptImagePreview = document.getElementById('gpt-image-preview');
+                        previewImage = gptImagePreview.querySelector('img');
+                        if (!previewImage) {
+                            previewImage = document.createElement('img');
+                            gptImagePreview.appendChild(previewImage);
+                        }
+                        previewImage.src = e.target.result;
+                    };
+                    
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+            
+            // Handle preview button
+            previewBtn.addEventListener('click', function() {
+                // Get form values
+                const title = document.getElementById('gpt-title').value || 'GPT Title';
+                const description = document.getElementById('gpt-description').value || 'GPT description will appear here.';
+                const url = document.getElementById('gpt-url').value || 'https://chatgpt.com/g/';
+                const isFeatured = document.getElementById('gpt-featured').value === '1';
+                const badgeText = document.getElementById('gpt-badge').value;
+                
+                // Update preview content
+                document.getElementById('gpt-title-preview').textContent = title;
+                document.getElementById('gpt-description-preview').textContent = description;
+                document.getElementById('gpt-url-preview').textContent = url;
+                
+                // Handle badge
+                const badgePreview = document.getElementById('gpt-badge-preview');
+                if (badgeText || isFeatured) {
+                    badgePreview.textContent = badgeText || 'Featured';
+                    badgePreview.style.display = 'block';
+                } else {
+                    badgePreview.style.display = 'none';
+                }
+                
+                // Show the preview container
+                previewContainer.style.display = 'block';
+                
+                // Scroll to the preview
+                previewContainer.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                if (!this.checkValidity()) {
+                    alert('Please fill out all required fields.');
+                    return;
+                }
+                
+                // Validate image
+                if (!imageInput.files || imageInput.files.length === 0) {
+                    alert('Please select an image for the GPT.');
+                    return;
+                }
+                
+                // In a real application, you would submit the form data to the server
+                // For demo, just show success message
+                alert('GPT saved successfully!');
+                
+                // Redirect back to GPTs list
+                window.location.href = 'gpts.html';
+            });
+        }
+    </script>
+</body>
+</html>
