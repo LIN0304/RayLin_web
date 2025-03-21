@@ -1,1 +1,833 @@
-$file:/users/raylin/desktop/personal-website/admin/gpts.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage GPTs - Ray Lin's Admin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --text-color: #333;
+            --background-color: #f5f7fa;
+            --sidebar-bg: #ffffff;
+            --card-background: #fff;
+            --border-color: #e1e4e8;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --border-radius: 8px;
+            --font-family: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu h3 {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar-menu li a:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu li a.active {
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .sidebar-menu li i {
+            margin-right: 0.75rem;
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .content-header h1 {
+            font-size: 1.75rem;
+        }
+
+        .toggle-sidebar {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #3a7dca;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            width: 300px;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            background: none;
+            width: 100%;
+            font-family: var(--font-family);
+            font-size: 0.9rem;
+        }
+
+        .search-box i {
+            color: #666;
+            margin-right: 0.5rem;
+        }
+
+        .gpt-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .gpt-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .gpt-card:hover {
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .gpt-image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gpt-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gpt-card:hover .gpt-image img {
+            transform: scale(1.05);
+        }
+
+        .gpt-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--text-color);
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .gpt-details {
+            padding: 1.25rem;
+        }
+
+        .gpt-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gpt-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .gpt-url {
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            word-break: break-all;
+        }
+
+        .gpt-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .gpt-actions button {
+            flex: 1;
+            padding: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .pagination button {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination button:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        .pagination button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .toggle-sidebar {
+                display: block;
+            }
+            
+            .toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+        }
+
+        /* Modal Styles */
+        .modal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-bg.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            transform: translateY(-50px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-bg.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #e74c3c;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-actions {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: var(--font-family);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <div class="toggle-sidebar">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>Ray Lin Admin</h1>
+        </div>
+        
+        <div class="sidebar-menu">
+            <h3>Main</h3>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="gpts.html" class="active"><i class="fas fa-robot"></i> GPTs</a></li>
+                <li><a href="demos.html"><i class="fas fa-vial"></i> AI Demos</a></li>
+                <li><a href="blog.html"><i class="fas fa-blog"></i> Blog Posts</a></li>
+                <li><a href="projects.html"><i class="fas fa-project-diagram"></i> Projects</a></li>
+                <li><a href="experience.html"><i class="fas fa-briefcase"></i> Experience</a></li>
+            </ul>
+            
+            <h3>Media</h3>
+            <ul>
+                <li><a href="media.html"><i class="fas fa-images"></i> Media Library</a></li>
+                <li><a href="uploads.html"><i class="fas fa-upload"></i> Upload Files</a></li>
+            </ul>
+            
+            <h3>Settings</h3>
+            <ul>
+                <li><a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Site Settings</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1>Manage GPTs</h1>
+            <a href="gpts-new.html" class="btn">
+                <i class="fas fa-plus"></i> Add New GPT
+            </a>
+        </div>
+        
+        <div class="toolbar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search GPTs...">
+            </div>
+            
+            <div class="filter-options">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+            </div>
+        </div>
+        
+        <div class="gpt-grid">
+            <div class="gpt-card">
+                <div class="gpt-image">
+                    <img src="../images/gpt1.jpg" alt="Puffer Finance GPT">
+                    <div class="gpt-badge">Featured</div>
+                </div>
+                <div class="gpt-details">
+                    <h3 class="gpt-title">Puffer Finance</h3>
+                    <p class="gpt-description">A specialized GPT for Puffer Labs products, providing information about Puffer Finance, Restaking, and Based Rollups.</p>
+                    <div class="gpt-url">https://chatgpt.com/g/g-8Oh5JO9Kb-puffer-finance</div>
+                    <div class="gpt-actions">
+                        <button class="btn btn-secondary edit-gpt" data-id="1">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger delete-gpt" data-id="1">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gpt-card">
+                <div class="gpt-image">
+                    <img src="../images/gpt2.jpg" alt="Code Master GPT">
+                </div>
+                <div class="gpt-details">
+                    <h3 class="gpt-title">Code Master GPT</h3>
+                    <p class="gpt-description">A programming assistant that helps developers write, debug, and optimize code across multiple languages.</p>
+                    <div class="gpt-url">https://chat.openai.com/g/</div>
+                    <div class="gpt-actions">
+                        <button class="btn btn-secondary edit-gpt" data-id="2">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger delete-gpt" data-id="2">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gpt-card">
+                <div class="gpt-image">
+                    <img src="../images/gpt3.jpg" alt="Content Creator Pro">
+                </div>
+                <div class="gpt-details">
+                    <h3 class="gpt-title">Content Creator Pro</h3>
+                    <p class="gpt-description">A versatile GPT designed for content creation across various formats including blog posts, social media updates, and marketing copy.</p>
+                    <div class="gpt-url">https://chat.openai.com/g/</div>
+                    <div class="gpt-actions">
+                        <button class="btn btn-secondary edit-gpt" data-id="3">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger delete-gpt" data-id="3">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gpt-card">
+                <div class="gpt-image">
+                    <img src="../images/gpt4.jpg" alt="Data Analyst GPT">
+                </div>
+                <div class="gpt-details">
+                    <h3 class="gpt-title">Data Analyst GPT</h3>
+                    <p class="gpt-description">Specialized in data analysis and visualization. This GPT can help interpret complex datasets, suggest visualizations, and explain statistical concepts.</p>
+                    <div class="gpt-url">https://chat.openai.com/g/</div>
+                    <div class="gpt-actions">
+                        <button class="btn btn-secondary edit-gpt" data-id="4">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger delete-gpt" data-id="4">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gpt-card">
+                <div class="gpt-image">
+                    <img src="../images/gpt5.jpg" alt="Learning Companion">
+                    <div class="gpt-badge">New</div>
+                </div>
+                <div class="gpt-details">
+                    <h3 class="gpt-title">Learning Companion</h3>
+                    <p class="gpt-description">An educational GPT designed to help learners master new subjects through interactive explanations, quizzes, and learning pathways.</p>
+                    <div class="gpt-url">https://chat.openai.com/g/</div>
+                    <div class="gpt-actions">
+                        <button class="btn btn-secondary edit-gpt" data-id="5">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger delete-gpt" data-id="5">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gpt-card">
+                <div class="gpt-image">
+                    <img src="../images/gpt6.jpg" alt="Productivity Master">
+                </div>
+                <div class="gpt-details">
+                    <h3 class="gpt-title">Productivity Master</h3>
+                    <p class="gpt-description">A GPT focused on improving personal and professional productivity through task management, time optimization, and workflow enhancement strategies.</p>
+                    <div class="gpt-url">https://chat.openai.com/g/</div>
+                    <div class="gpt-actions">
+                        <button class="btn btn-secondary edit-gpt" data-id="6">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger delete-gpt" data-id="6">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pagination">
+            <button><i class="fas fa-chevron-left"></i></button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </main>
+    
+    <!-- Edit GPT Modal -->
+    <div class="modal-bg" id="edit-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Edit GPT</h2>
+                <button class="modal-close" id="close-edit-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-gpt-form">
+                    <input type="hidden" id="edit-gpt-id">
+                    <div class="form-group">
+                        <label for="edit-gpt-title">Title</label>
+                        <input type="text" id="edit-gpt-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-gpt-description">Description</label>
+                        <textarea id="edit-gpt-description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-gpt-url">URL</label>
+                        <input type="url" id="edit-gpt-url">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-gpt-image">Image</label>
+                        <input type="file" id="edit-gpt-image" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-gpt-featured">Featured</label>
+                        <select id="edit-gpt-featured">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="cancel-edit">Cancel</button>
+                <button class="btn" id="save-edit">Save Changes</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-bg" id="delete-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Confirm Deletion</h2>
+                <button class="modal-close" id="close-delete-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this GPT? This action cannot be undone.</p>
+                <input type="hidden" id="delete-gpt-id">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="cancel-delete">Cancel</button>
+                <button class="btn btn-danger" id="confirm-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!sessionStorage.getItem('isLoggedIn')) {
+                window.location.href = 'index.html';
+            }
+        });
+        
+        // Toggle sidebar on mobile
+        const toggleBtn = document.querySelector('.toggle-sidebar');
+        const sidebar = document.querySelector('.sidebar');
+        
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+        
+        // Handle responsive layout
+        function checkWidth() {
+            if (window.innerWidth <= 992) {
+                toggleBtn.style.display = 'flex';
+            } else {
+                toggleBtn.style.display = 'none';
+                sidebar.classList.remove('active');
+            }
+        }
+        
+        window.addEventListener('resize', checkWidth);
+        checkWidth();
+        
+        // Modal functionality
+        const editBtns = document.querySelectorAll('.edit-gpt');
+        const deleteBtns = document.querySelectorAll('.delete-gpt');
+        const editModal = document.getElementById('edit-modal');
+        const deleteModal = document.getElementById('delete-modal');
+        const closeEditBtn = document.getElementById('close-edit-modal');
+        const closeDeleteBtn = document.getElementById('close-delete-modal');
+        const cancelEditBtn = document.getElementById('cancel-edit');
+        const cancelDeleteBtn = document.getElementById('cancel-delete');
+        const saveEditBtn = document.getElementById('save-edit');
+        const confirmDeleteBtn = document.getElementById('confirm-delete');
+        
+        // Edit GPT functionality
+        editBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const gptId = this.getAttribute('data-id');
+                const gptCard = this.closest('.gpt-card');
+                const title = gptCard.querySelector('.gpt-title').textContent;
+                const description = gptCard.querySelector('.gpt-description').textContent;
+                const url = gptCard.querySelector('.gpt-url').textContent;
+                const featured = gptCard.querySelector('.gpt-badge') ? 1 : 0;
+                
+                document.getElementById('edit-gpt-id').value = gptId;
+                document.getElementById('edit-gpt-title').value = title;
+                document.getElementById('edit-gpt-description').value = description;
+                document.getElementById('edit-gpt-url').value = url;
+                document.getElementById('edit-gpt-featured').value = featured;
+                
+                editModal.classList.add('active');
+            });
+        });
+        
+        // Delete GPT functionality
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const gptId = this.getAttribute('data-id');
+                document.getElementById('delete-gpt-id').value = gptId;
+                deleteModal.classList.add('active');
+            });
+        });
+        
+        // Close modals
+        closeEditBtn.addEventListener('click', function() {
+            editModal.classList.remove('active');
+        });
+        
+        closeDeleteBtn.addEventListener('click', function() {
+            deleteModal.classList.remove('active');
+        });
+        
+        cancelEditBtn.addEventListener('click', function() {
+            editModal.classList.remove('active');
+        });
+        
+        cancelDeleteBtn.addEventListener('click', function() {
+            deleteModal.classList.remove('active');
+        });
+        
+        // Save edit (for demo purposes - would connect to backend API in production)
+        saveEditBtn.addEventListener('click', function() {
+            alert('Changes saved successfully!');
+            editModal.classList.remove('active');
+        });
+        
+        // Confirm delete (for demo purposes - would connect to backend API in production)
+        confirmDeleteBtn.addEventListener('click', function() {
+            const gptId = document.getElementById('delete-gpt-id').value;
+            
+            // In a real app, you would send a request to delete the item from the database
+            // For demo purposes, we'll just remove it from the DOM
+            const gptCards = document.querySelectorAll('.gpt-card');
+            gptCards.forEach(card => {
+                const editBtn = card.querySelector('.edit-gpt');
+                if (editBtn.getAttribute('data-id') === gptId) {
+                    card.remove();
+                }
+            });
+            
+            alert('GPT deleted successfully!');
+            deleteModal.classList.remove('active');
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target === editModal) {
+                editModal.classList.remove('active');
+            }
+            if (e.target === deleteModal) {
+                deleteModal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
