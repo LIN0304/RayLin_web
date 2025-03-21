@@ -1,1 +1,877 @@
-$file:/users/raylin/desktop/personal-website/admin/uploads.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Files - Ray Lin's Admin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --text-color: #333;
+            --background-color: #f5f7fa;
+            --sidebar-bg: #ffffff;
+            --card-background: #fff;
+            --border-color: #e1e4e8;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --border-radius: 8px;
+            --font-family: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu h3 {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar-menu li a:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu li a.active {
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .sidebar-menu li i {
+            margin-right: 0.75rem;
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .content-header h1 {
+            font-size: 1.75rem;
+        }
+
+        .toggle-sidebar {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #3a7dca;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .upload-container {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(74, 144, 226, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .upload-text h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-text p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .upload-details {
+            margin-top: 2rem;
+        }
+
+        .upload-details h3 {
+            margin-bottom: 1rem;
+        }
+
+        .file-list {
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .file-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-item:hover {
+            background-color: rgba(74, 144, 226, 0.05);
+        }
+
+        .file-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .file-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .file-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .file-action-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .file-action-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .file-action-btn.delete:hover {
+            color: #e74c3c;
+        }
+
+        .upload-progress {
+            margin-top: 1rem;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background-color: #f1f1f1;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .recent-uploads {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+        }
+
+        .recent-uploads h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+        }
+
+        .thumbnails-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .thumbnail {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 1/1;
+            cursor: pointer;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .thumbnail:hover img {
+            transform: scale(1.05);
+        }
+
+        .thumbnail-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .thumbnail:hover .thumbnail-overlay {
+            opacity: 1;
+        }
+
+        .thumbnail-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .thumbnail-action-btn {
+            background-color: white;
+            color: var(--text-color);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .thumbnail-action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .upload-info {
+            margin-top: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .upload-info p {
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-info strong {
+            color: var(--text-color);
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .toggle-sidebar {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="toggle-sidebar">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>Ray Lin Admin</h1>
+        </div>
+        
+        <div class="sidebar-menu">
+            <h3>Main</h3>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="gpts.html"><i class="fas fa-robot"></i> GPTs</a></li>
+                <li><a href="demos.html"><i class="fas fa-vial"></i> AI Demos</a></li>
+                <li><a href="blog.html"><i class="fas fa-blog"></i> Blog Posts</a></li>
+                <li><a href="projects.html"><i class="fas fa-project-diagram"></i> Projects</a></li>
+                <li><a href="experience.html"><i class="fas fa-briefcase"></i> Experience</a></li>
+            </ul>
+            
+            <h3>Media</h3>
+            <ul>
+                <li><a href="media.html"><i class="fas fa-images"></i> Media Library</a></li>
+                <li><a href="uploads.html" class="active"><i class="fas fa-upload"></i> Upload Files</a></li>
+            </ul>
+            
+            <h3>Settings</h3>
+            <ul>
+                <li><a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Site Settings</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1>Upload Files</h1>
+        </div>
+        
+        <div class="upload-container">
+            <div class="upload-area" id="dropArea">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <div class="upload-text">
+                    <h3>Drag & Drop Files</h3>
+                    <p>or click to browse your computer</p>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-folder-open"></i> Browse Files
+                    </button>
+                </div>
+                <input type="file" class="file-input" id="fileInput" multiple>
+            </div>
+            
+            <div class="upload-info">
+                <p><strong>Accepted file types:</strong> JPG, PNG, GIF, SVG, WebP</p>
+                <p><strong>Maximum file size:</strong> 5MB per file</p>
+            </div>
+
+            <div class="upload-progress" id="uploadProgress" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-info">
+                    <span id="uploadStatus">Uploading...</span>
+                    <span id="uploadPercentage">0%</span>
+                </div>
+            </div>
+            
+            <div class="upload-options">
+                <div class="selected-files">
+                    <span id="fileCount">0</span> files selected
+                </div>
+                <button class="btn" id="uploadBtn" disabled>
+                    <i class="fas fa-upload"></i> Upload Files
+                </button>
+            </div>
+            
+            <div class="upload-details" id="filePreview" style="display: none;">
+                <h3>Selected Files</h3>
+                <div class="file-list" id="fileList">
+                    <!-- Dynamic file items will be added here -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="recent-uploads">
+            <h2>Recently Uploaded</h2>
+            <div class="thumbnails-grid">
+                <div class="thumbnail">
+                    <img src="../images/gpt1.jpg" alt="Uploaded image">
+                    <div class="thumbnail-overlay">
+                        <div class="thumbnail-actions">
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-link"></i>
+                            </button>
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="thumbnail">
+                    <img src="../images/gpt2.jpg" alt="Uploaded image">
+                    <div class="thumbnail-overlay">
+                        <div class="thumbnail-actions">
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-link"></i>
+                            </button>
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="thumbnail">
+                    <img src="../images/gpt3.jpg" alt="Uploaded image">
+                    <div class="thumbnail-overlay">
+                        <div class="thumbnail-actions">
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-link"></i>
+                            </button>
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="thumbnail">
+                    <img src="../images/gpt4.jpg" alt="Uploaded image">
+                    <div class="thumbnail-overlay">
+                        <div class="thumbnail-actions">
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-link"></i>
+                            </button>
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="thumbnail">
+                    <img src="../images/gpt5.jpg" alt="Uploaded image">
+                    <div class="thumbnail-overlay">
+                        <div class="thumbnail-actions">
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-link"></i>
+                            </button>
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="thumbnail">
+                    <img src="../images/gpt6.jpg" alt="Uploaded image">
+                    <div class="thumbnail-overlay">
+                        <div class="thumbnail-actions">
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-link"></i>
+                            </button>
+                            <button class="thumbnail-action-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!sessionStorage.getItem('isLoggedIn')) {
+                window.location.href = 'index.html';
+            }
+            
+            initializeUploadFunctionality();
+        });
+        
+        // Toggle sidebar on mobile
+        const toggleBtn = document.querySelector('.toggle-sidebar');
+        const sidebar = document.querySelector('.sidebar');
+        
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+        
+        // Handle responsive layout
+        function checkWidth() {
+            if (window.innerWidth <= 992) {
+                toggleBtn.style.display = 'flex';
+            } else {
+                toggleBtn.style.display = 'none';
+                sidebar.classList.remove('active');
+            }
+        }
+        
+        window.addEventListener('resize', checkWidth);
+        checkWidth();
+        
+        // Initialize file upload functionality
+        function initializeUploadFunctionality() {
+            const dropArea = document.getElementById('dropArea');
+            const fileInput = document.getElementById('fileInput');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const fileCount = document.getElementById('fileCount');
+            const filePreview = document.getElementById('filePreview');
+            const fileList = document.getElementById('fileList');
+            const uploadProgress = document.getElementById('uploadProgress');
+            const progressFill = document.getElementById('progressFill');
+            const uploadPercentage = document.getElementById('uploadPercentage');
+            const uploadStatus = document.getElementById('uploadStatus');
+            
+            // When clicking on the drop area, trigger file input
+            dropArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            // Prevent default behavior for drag events
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            // Highlight drop area when dragging over it
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropArea.classList.add('highlight');
+            }
+            
+            function unhighlight() {
+                dropArea.classList.remove('highlight');
+            }
+            
+            // Handle dropped files
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files);
+            }
+            
+            // Handle files selected through the file input
+            fileInput.addEventListener('change', function() {
+                handleFiles(this.files);
+            });
+            
+            function handleFiles(files) {
+                const validFiles = Array.from(files).filter(file => {
+                    // Check file type
+                    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml', 'image/webp'];
+                    if (!validTypes.includes(file.type)) {
+                        alert(`File type ${file.type} is not supported.`);
+                        return false;
+                    }
+                    
+                    // Check file size (5MB limit)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert(`File ${file.name} is too large. Maximum size is 5MB.`);
+                        return false;
+                    }
+                    
+                    return true;
+                });
+                
+                if (validFiles.length > 0) {
+                    fileCount.textContent = validFiles.length;
+                    uploadBtn.disabled = false;
+                    filePreview.style.display = 'block';
+                    
+                    // Clear previous file list
+                    fileList.innerHTML = '';
+                    
+                    // Display file previews
+                    validFiles.forEach(file => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onloadend = function() {
+                            const fileItem = document.createElement('div');
+                            fileItem.className = 'file-item';
+                            
+                            const filePreview = document.createElement('div');
+                            filePreview.className = 'file-preview';
+                            
+                            const img = document.createElement('img');
+                            img.src = reader.result;
+                            filePreview.appendChild(img);
+                            
+                            const fileInfo = document.createElement('div');
+                            fileInfo.className = 'file-info';
+                            
+                            const fileName = document.createElement('div');
+                            fileName.className = 'file-name';
+                            fileName.textContent = file.name;
+                            
+                            const fileMeta = document.createElement('div');
+                            fileMeta.className = 'file-meta';
+                            fileMeta.innerHTML = `
+                                <span>${formatFileSize(file.size)}</span>
+                                <span>${file.type.split('/')[1].toUpperCase()}</span>
+                            `;
+                            
+                            fileInfo.appendChild(fileName);
+                            fileInfo.appendChild(fileMeta);
+                            
+                            const fileActions = document.createElement('div');
+                            fileActions.className = 'file-actions';
+                            
+                            const deleteBtn = document.createElement('button');
+                            deleteBtn.className = 'file-action-btn delete';
+                            deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+                            deleteBtn.addEventListener('click', function() {
+                                fileItem.remove();
+                                const remainingFiles = fileList.querySelectorAll('.file-item').length;
+                                fileCount.textContent = remainingFiles;
+                                if (remainingFiles === 0) {
+                                    filePreview.style.display = 'none';
+                                    uploadBtn.disabled = true;
+                                }
+                            });
+                            
+                            fileActions.appendChild(deleteBtn);
+                            
+                            fileItem.appendChild(filePreview);
+                            fileItem.appendChild(fileInfo);
+                            fileItem.appendChild(fileActions);
+                            
+                            fileList.appendChild(fileItem);
+                        };
+                    });
+                } else {
+                    fileCount.textContent = '0';
+                    uploadBtn.disabled = true;
+                    filePreview.style.display = 'none';
+                }
+            }
+            
+            // Format file size
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            // Handle file upload
+            uploadBtn.addEventListener('click', function() {
+                // Show progress bar
+                uploadProgress.style.display = 'block';
+                
+                // Simulate upload progress (for demo)
+                let progress = 0;
+                const interval = setInterval(function() {
+                    progress += 5;
+                    progressFill.style.width = progress + '%';
+                    uploadPercentage.textContent = progress + '%';
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        uploadStatus.textContent = 'Upload complete!';
+                        
+                        // Reset after 2 seconds
+                        setTimeout(function() {
+                            uploadProgress.style.display = 'none';
+                            filePreview.style.display = 'none';
+                            fileList.innerHTML = '';
+                            fileCount.textContent = '0';
+                            uploadBtn.disabled = true;
+                            progressFill.style.width = '0';
+                            uploadPercentage.textContent = '0%';
+                            uploadStatus.textContent = 'Uploading...';
+                            
+                            // Show success message
+                            alert('Files uploaded successfully!');
+                        }, 2000);
+                    }
+                }, 100);
+            });
+        }
+    </script>
+</body>
+</html>
