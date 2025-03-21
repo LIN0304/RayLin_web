@@ -1,1 +1,962 @@
-$file:/users/raylin/desktop/personal-website/admin/experience.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Experience - Ray Lin's Admin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --text-color: #333;
+            --background-color: #f5f7fa;
+            --sidebar-bg: #ffffff;
+            --card-background: #fff;
+            --border-color: #e1e4e8;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --border-radius: 8px;
+            --font-family: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu h3 {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar-menu li a:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu li a.active {
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .sidebar-menu li i {
+            margin-right: 0.75rem;
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .content-header h1 {
+            font-size: 1.75rem;
+        }
+
+        .toggle-sidebar {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #3a7dca;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .experience-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .experience-card:hover {
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .experience-title {
+            margin-bottom: 0.5rem;
+        }
+
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .company-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .company-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .experience-dates {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .experience-description {
+            margin-bottom: 1.5rem;
+        }
+
+        .experience-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        .drag-handle {
+            cursor: move;
+            color: #666;
+            margin-right: 0.5rem;
+        }
+
+        .experience-form {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: var(--font-family);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .image-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .preview-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .preview-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-placeholder {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #f1f1f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        .form-actions {
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Modal Styles */
+        .modal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-bg.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            transform: translateY(-50px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-bg.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #e74c3c;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-actions {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .toggle-sidebar {
+                display: block;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="toggle-sidebar">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>Ray Lin Admin</h1>
+        </div>
+        
+        <div class="sidebar-menu">
+            <h3>Main</h3>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="gpts.html"><i class="fas fa-robot"></i> GPTs</a></li>
+                <li><a href="demos.html"><i class="fas fa-vial"></i> AI Demos</a></li>
+                <li><a href="blog.html"><i class="fas fa-blog"></i> Blog Posts</a></li>
+                <li><a href="projects.html"><i class="fas fa-project-diagram"></i> Projects</a></li>
+                <li><a href="experience.html" class="active"><i class="fas fa-briefcase"></i> Experience</a></li>
+            </ul>
+            
+            <h3>Media</h3>
+            <ul>
+                <li><a href="media.html"><i class="fas fa-images"></i> Media Library</a></li>
+                <li><a href="uploads.html"><i class="fas fa-upload"></i> Upload Files</a></li>
+            </ul>
+            
+            <h3>Settings</h3>
+            <ul>
+                <li><a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Site Settings</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1>Manage Experience</h1>
+            <button class="btn" id="add-experience-btn">
+                <i class="fas fa-plus"></i> Add New Experience
+            </button>
+        </div>
+        
+        <div class="experience-form" id="experience-form" style="display: none;">
+            <h2 class="form-title">Add New Experience</h2>
+            <form id="add-experience">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="job-title">Job Title</label>
+                        <input type="text" id="job-title" name="job-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company-name">Company Name</label>
+                        <input type="text" id="company-name" name="company-name" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="start-date">Start Date</label>
+                        <input type="month" id="start-date" name="start-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end-date">End Date</label>
+                        <input type="month" id="end-date" name="end-date">
+                        <div style="margin-top: 0.5rem;">
+                            <input type="checkbox" id="current-job" name="current-job">
+                            <label for="current-job" style="display: inline;">Current Job</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="company-url">Company Website URL</label>
+                    <input type="url" id="company-url" name="company-url">
+                </div>
+                
+                <div class="form-group">
+                    <label for="company-logo">Company Logo</label>
+                    <input type="file" id="company-logo" name="company-logo" accept="image/*">
+                    <div class="image-preview">
+                        <div class="preview-placeholder" id="logo-preview">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <span id="logo-preview-text">No image selected</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="job-description">Job Description</label>
+                    <textarea id="job-description" name="job-description" required></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-experience-btn">Cancel</button>
+                    <button type="submit" class="btn">Save Experience</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="experience-list" id="experience-list">
+            <div class="experience-card">
+                <div class="experience-header">
+                    <div>
+                        <h3 class="experience-title">GPT Developer</h3>
+                        <div class="company-info">
+                            <div class="company-logo">
+                                <img src="https://media.licdn.com/dms/image/v2/D560BAQF9T41gkxrdvA/company-logo_100_100/company-logo_100_100/0/1716237538901?e=1747872000&v=beta&t=f4swr8gGyuC6yBpz2vOMvgJUtnUMVxu9T4fDb2FXCi0" alt="0G Labs">
+                            </div>
+                            <div class="company-name">0G Labs</div>
+                        </div>
+                        <div class="experience-dates">Jun 2024 - Present</div>
+                    </div>
+                    <div class="drag-handle">
+                        <i class="fas fa-grip-vertical"></i>
+                    </div>
+                </div>
+                
+                <div class="experience-description">
+                    <p>Building 0G Labs GPTs</p>
+                </div>
+                
+                <div class="experience-actions">
+                    <button class="btn btn-secondary btn-sm edit-experience" data-id="1">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-danger btn-sm delete-experience" data-id="1">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </div>
+            </div>
+            
+            <div class="experience-card">
+                <div class="experience-header">
+                    <div>
+                        <h3 class="experience-title">Student Ambassador</h3>
+                        <div class="company-info">
+                            <div class="company-logo">
+                                <img src="https://media.licdn.com/dms/image/v2/D560BAQGWU1W9WNepfw/company-logo_100_100/company-logo_100_100/0/1686928227989/solana_foundation_logo?e=1747872000&v=beta&t=COs5qHl3xu5PVk5cfZdVogepOmazz3HvNrTBr8yGnAM" alt="Solana Foundation">
+                            </div>
+                            <div class="company-name">Solana Foundation</div>
+                        </div>
+                        <div class="experience-dates">May 2024 - Present</div>
+                    </div>
+                    <div class="drag-handle">
+                        <i class="fas fa-grip-vertical"></i>
+                    </div>
+                </div>
+                
+                <div class="experience-description">
+                    <p>Promoting Solana ecosystem and technologies</p>
+                </div>
+                
+                <div class="experience-actions">
+                    <button class="btn btn-secondary btn-sm edit-experience" data-id="2">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-danger btn-sm delete-experience" data-id="2">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </div>
+            </div>
+            
+            <div class="experience-card">
+                <div class="experience-header">
+                    <div>
+                        <h3 class="experience-title">Evangelist</h3>
+                        <div class="company-info">
+                            <div class="company-logo">
+                                <img src="https://media.licdn.com/dms/image/v2/D560BAQGWU1W9WNepfw/company-logo_100_100/company-logo_100_100/0/1686928227989/solana_foundation_logo?e=1747872000&v=beta&t=COs5qHl3xu5PVk5cfZdVogepOmazz3HvNrTBr8yGnAM" alt="DeGate">
+                            </div>
+                            <div class="company-name">DeGate</div>
+                        </div>
+                        <div class="experience-dates">May 2024 - Present</div>
+                    </div>
+                    <div class="drag-handle">
+                        <i class="fas fa-grip-vertical"></i>
+                    </div>
+                </div>
+                
+                <div class="experience-description">
+                    <p>DeGate is a Decentralized Exchange (DEX) protocol secured by Ethereum, powered by Zero Knowledge (ZK) technology.</p>
+                </div>
+                
+                <div class="experience-actions">
+                    <button class="btn btn-secondary btn-sm edit-experience" data-id="3">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-danger btn-sm delete-experience" data-id="3">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-bg" id="delete-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Confirm Deletion</h2>
+                <button class="modal-close" id="close-delete-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this experience? This action cannot be undone.</p>
+                <input type="hidden" id="delete-experience-id">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="cancel-delete">Cancel</button>
+                <button class="btn btn-danger" id="confirm-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!sessionStorage.getItem('isLoggedIn')) {
+                window.location.href = 'index.html';
+            }
+            
+            initExperienceForm();
+            initDeleteModal();
+        });
+        
+        // Toggle sidebar on mobile
+        const toggleBtn = document.querySelector('.toggle-sidebar');
+        const sidebar = document.querySelector('.sidebar');
+        
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+        
+        // Handle responsive layout
+        function checkWidth() {
+            if (window.innerWidth <= 992) {
+                toggleBtn.style.display = 'flex';
+            } else {
+                toggleBtn.style.display = 'none';
+                sidebar.classList.remove('active');
+            }
+        }
+        
+        window.addEventListener('resize', checkWidth);
+        checkWidth();
+        
+        // Initialize experience form functionality
+        function initExperienceForm() {
+            const addBtn = document.getElementById('add-experience-btn');
+            const cancelBtn = document.getElementById('cancel-experience-btn');
+            const form = document.getElementById('experience-form');
+            const currentJobCheckbox = document.getElementById('current-job');
+            const endDateInput = document.getElementById('end-date');
+            const logoInput = document.getElementById('company-logo');
+            const logoPreview = document.getElementById('logo-preview');
+            const logoPreviewText = document.getElementById('logo-preview-text');
+            
+            // Show form when Add New Experience button is clicked
+            addBtn.addEventListener('click', function() {
+                form.style.display = 'block';
+                document.getElementById('add-experience').reset();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // Hide form when Cancel button is clicked
+            cancelBtn.addEventListener('click', function() {
+                form.style.display = 'none';
+            });
+            
+            // Handle Current Job checkbox
+            currentJobCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    endDateInput.disabled = true;
+                    endDateInput.value = '';
+                } else {
+                    endDateInput.disabled = false;
+                }
+            });
+            
+            // Handle logo preview
+            logoInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        // Store the image data in a variable to use later when saving
+                        window.logoImageData = e.target.result;
+                        
+                        // Update the preview
+                        logoPreview.innerHTML = `<img src="${e.target.result}" alt="Company Logo Preview">`;
+                        logoPreview.classList.remove('preview-placeholder');
+                        logoPreview.classList.add('preview-img');
+                        if (logoPreviewText) {
+                            logoPreviewText.textContent = 'Logo selected';
+                        } else {
+                            logoPreview.nextElementSibling.textContent = 'Logo selected';
+                        }
+                    };
+                    
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+            
+            // Handle form submission
+            document.getElementById('add-experience').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Create FormData object to handle file uploads
+                const formData = new FormData(this);
+                
+                // Add the image data explicitly if available
+                if (window.logoImageData) {
+                    formData.set('logo-image-data', window.logoImageData);
+                }
+                
+                // In a real application, you would send the data to the server
+                // For now, simulate saving with the logo data
+                
+                // This is where we would typically make an AJAX request to save the data
+                console.log('Saving experience with logo data...');
+                
+                // Get the form element for updating the UI
+                const experienceId = this.getAttribute('data-id');
+                
+                // If editing an existing experience, update its logo in the UI
+                if (experienceId) {
+                    const cards = document.querySelectorAll('.experience-card');
+                    cards.forEach(card => {
+                        const editBtn = card.querySelector('.edit-experience');
+                        if (editBtn && editBtn.getAttribute('data-id') === experienceId) {
+                            // Update the logo in the card if we have new image data
+                            if (window.logoImageData) {
+                                const logoImg = card.querySelector('.company-logo img');
+                                if (logoImg) {
+                                    logoImg.src = window.logoImageData;
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                alert('Experience saved successfully!');
+                form.style.display = 'none';
+                
+                // Clear the stored image data after saving
+                window.logoImageData = null;
+            });
+            
+            // Handle edit buttons
+            const editBtns = document.querySelectorAll('.edit-experience');
+            
+            editBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const card = this.closest('.experience-card');
+                    
+                    // Extract information from the card
+                    const title = card.querySelector('.experience-title').textContent;
+                    const company = card.querySelector('.company-name').textContent;
+                    const dates = card.querySelector('.experience-dates').textContent;
+                    const description = card.querySelector('.experience-description p').textContent;
+                    
+                    // Get the logo source if it exists
+                    const logoImg = card.querySelector('.company-logo img');
+                    const logoSrc = logoImg ? logoImg.src : null;
+                    
+                    // Store the current logo source for comparison later
+                    window.currentLogoSrc = logoSrc;
+                    
+                    // Fill the form
+                    const experienceForm = document.getElementById('add-experience');
+                    experienceForm.setAttribute('data-id', id);
+                    
+                    document.getElementById('job-title').value = title;
+                    document.getElementById('company-name').value = company;
+                    document.getElementById('job-description').value = description;
+                    
+                    // Update the logo preview if available
+                    if (logoSrc) {
+                        logoPreview.innerHTML = `<img src="${logoSrc}" alt="Company Logo Preview">`;
+                        logoPreview.classList.remove('preview-placeholder');
+                        logoPreview.classList.add('preview-img');
+                        if (logoPreviewText) {
+                            logoPreviewText.textContent = 'Current logo';
+                        } else {
+                            logoPreview.nextElementSibling.textContent = 'Current logo';
+                        }
+                    }
+                    
+                    // Parse dates
+                    if (dates.includes('Present')) {
+                        document.getElementById('current-job').checked = true;
+                        endDateInput.disabled = true;
+                        
+                        // Parse the start date
+                        const startDateStr = dates.split(' - ')[0];
+                        const startDate = parseDate(startDateStr);
+                        if (startDate) {
+                            document.getElementById('start-date').value = startDate;
+                        }
+                    } else {
+                        document.getElementById('current-job').checked = false;
+                        endDateInput.disabled = false;
+                        
+                        // Parse both dates
+                        const [startDateStr, endDateStr] = dates.split(' - ');
+                        const startDate = parseDate(startDateStr);
+                        const endDate = parseDate(endDateStr);
+                        
+                        if (startDate) {
+                            document.getElementById('start-date').value = startDate;
+                        }
+                        
+                        if (endDate) {
+                            document.getElementById('end-date').value = endDate;
+                        }
+                    }
+                    
+                    // Show the form
+                    form.style.display = 'block';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    
+                    // Change the form title to indicate editing
+                    document.querySelector('.form-title').textContent = 'Edit Experience';
+                });
+            });
+        }
+        
+        // Helper function to parse date strings like "Jun 2024" to "2024-06" format
+        function parseDate(dateStr) {
+            const months = {
+                'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06',
+                'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'
+            };
+            
+            try {
+                const parts = dateStr.trim().split(' ');
+                if (parts.length === 2) {
+                    const month = months[parts[0]];
+                    const year = parts[1];
+                    
+                    if (month && year) {
+                        return `${year}-${month}`;
+                    }
+                }
+            } catch (err) {
+                console.error('Error parsing date:', err);
+            }
+            
+            return '';
+        }
+        
+        // Initialize delete modal functionality
+        function initDeleteModal() {
+            const deleteBtns = document.querySelectorAll('.delete-experience');
+            const deleteModal = document.getElementById('delete-modal');
+            const closeBtn = document.getElementById('close-delete-modal');
+            const cancelBtn = document.getElementById('cancel-delete');
+            const confirmBtn = document.getElementById('confirm-delete');
+            
+            // Show modal when delete button is clicked
+            deleteBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    document.getElementById('delete-experience-id').value = id;
+                    deleteModal.classList.add('active');
+                });
+            });
+            
+            // Hide modal when close button is clicked
+            closeBtn.addEventListener('click', function() {
+                deleteModal.classList.remove('active');
+            });
+            
+            // Hide modal when Cancel button is clicked
+            cancelBtn.addEventListener('click', function() {
+                deleteModal.classList.remove('active');
+            });
+            
+            // Handle delete confirmation
+            confirmBtn.addEventListener('click', function() {
+                const id = document.getElementById('delete-experience-id').value;
+                
+                // In a real application, you would send a delete request to the server
+                // For demo purposes, we'll just remove the element from the DOM
+                const cards = document.querySelectorAll('.experience-card');
+                cards.forEach(card => {
+                    const deleteBtn = card.querySelector('.delete-experience');
+                    if (deleteBtn.getAttribute('data-id') === id) {
+                        card.remove();
+                    }
+                });
+                
+                alert('Experience deleted successfully!');
+                deleteModal.classList.remove('active');
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === deleteModal) {
+                    deleteModal.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
