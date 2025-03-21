@@ -1,1 +1,1266 @@
-$file:/users/raylin/desktop/personal-website/admin/projects.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Projects - Ray Lin's Admin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --text-color: #333;
+            --background-color: #f5f7fa;
+            --sidebar-bg: #ffffff;
+            --card-background: #fff;
+            --border-color: #e1e4e8;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --border-radius: 8px;
+            --font-family: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu h3 {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar-menu li a:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu li a.active {
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .sidebar-menu li i {
+            margin-right: 0.75rem;
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .content-header h1 {
+            font-size: 1.75rem;
+        }
+
+        .toggle-sidebar {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #3a7dca;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: white;
+            font-family: var(--font-family);
+            font-size: 0.9rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .filter-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .project-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.05);
+        }
+
+        .project-category {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .project-details {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .project-details h3 {
+            margin-bottom: 0.75rem;
+        }
+
+        .project-details p {
+            color: var(--light-text);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            background-color: #f4f5f7;
+            color: var(--secondary-color);
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .project-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .github-link {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--secondary-color);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .github-link:hover {
+            color: var(--text-color);
+        }
+
+        .github-link img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .projects-list {
+            display: none;
+        }
+
+        .project-list-item {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-list-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .project-list-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .project-list-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-list-details {
+            flex: 1;
+        }
+
+        .project-list-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .project-list-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-list-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .project-list-tech span {
+            background-color: #f4f5f7;
+            color: var(--secondary-color);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .project-list-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-left: 1rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .pagination button {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination button:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        .pagination button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Modal Styles */
+        .modal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-bg.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            transform: translateY(-50px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-bg.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #e74c3c;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-actions {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: var(--font-family);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .tag-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag {
+            background-color: var(--background-color);
+            border-radius: 20px;
+            padding: 0.25rem 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .tag-remove {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.8rem;
+        }
+
+        .tag-remove:hover {
+            color: #666;
+        }
+
+        .tag-input input {
+            flex: 1;
+            min-width: 100px;
+            border: none;
+            padding: 0.25rem;
+            font-size: 0.85rem;
+        }
+
+        .tag-input input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .image-preview {
+            margin-top: 1rem;
+        }
+
+        .preview-container {
+            width: 100%;
+            height: 200px;
+            background-color: var(--background-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #666;
+        }
+
+        .placeholder i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .toggle-sidebar {
+                display: block;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="toggle-sidebar">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>Ray Lin Admin</h1>
+        </div>
+        
+        <div class="sidebar-menu">
+            <h3>Main</h3>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="gpts.html"><i class="fas fa-robot"></i> GPTs</a></li>
+                <li><a href="demos.html"><i class="fas fa-vial"></i> AI Demos</a></li>
+                <li><a href="blog.html"><i class="fas fa-blog"></i> Blog Posts</a></li>
+                <li><a href="projects.html" class="active"><i class="fas fa-project-diagram"></i> Projects</a></li>
+                <li><a href="experience.html"><i class="fas fa-briefcase"></i> Experience</a></li>
+            </ul>
+            
+            <h3>Media</h3>
+            <ul>
+                <li><a href="media.html"><i class="fas fa-images"></i> Media Library</a></li>
+                <li><a href="uploads.html"><i class="fas fa-upload"></i> Upload Files</a></li>
+            </ul>
+            
+            <h3>Settings</h3>
+            <ul>
+                <li><a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Site Settings</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1>Manage Projects</h1>
+            <button class="btn" id="add-project-btn">
+                <i class="fas fa-plus"></i> Add New Project
+            </button>
+        </div>
+        
+        <div class="toolbar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-projects" placeholder="Search projects...">
+            </div>
+            
+            <div class="filter-controls">
+                <select id="filter-category">
+                    <option value="all">All Categories</option>
+                    <option value="web">Web Development</option>
+                    <option value="ai">AI & ML</option>
+                    <option value="blockchain">Blockchain</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="projects-grid" id="projects-grid">
+            <div class="project-card" data-category="ai">
+                <div class="project-image">
+                    <img src="../images/project1.jpg" alt="AI Assistant Demo">
+                    <div class="project-category">AI & ML</div>
+                </div>
+                <div class="project-details">
+                    <h3>AI Assistant</h3>
+                    <p>A conversational AI assistant capable of understanding and responding to user queries.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">NLP</span>
+                        <span class="tech-tag">TensorFlow</span>
+                    </div>
+                    <div class="project-actions">
+                        <div class="project-links">
+                            <button class="btn btn-secondary btn-sm edit-project" data-id="1">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm delete-project" data-id="1">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project-card" data-category="web">
+                <div class="project-image">
+                    <img src="../images/project2.jpg" alt="Responsive Web Application">
+                    <div class="project-category">Web Development</div>
+                </div>
+                <div class="project-details">
+                    <h3>Interactive Dashboard</h3>
+                    <p>A responsive web dashboard that visualizes complex data in an intuitive interface.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">D3.js</span>
+                        <span class="tech-tag">CSS Grid</span>
+                    </div>
+                    <div class="project-actions">
+                        <div class="project-links">
+                            <button class="btn btn-secondary btn-sm edit-project" data-id="2">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm delete-project" data-id="2">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project-card" data-category="ai">
+                <div class="project-image">
+                    <img src="../images/project3.jpg" alt="Machine Learning Model">
+                    <div class="project-category">AI & ML</div>
+                </div>
+                <div class="project-details">
+                    <h3>Predictive Analytics System</h3>
+                    <p>A machine learning model that predicts future trends based on historical data.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Scikit-learn</span>
+                        <span class="tech-tag">Pandas</span>
+                    </div>
+                    <div class="project-actions">
+                        <div class="project-links">
+                            <button class="btn btn-secondary btn-sm edit-project" data-id="3">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm delete-project" data-id="3">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project-card" data-category="other">
+                <div class="project-image">
+                    <img src="../images/project4.jpg" alt="Mobile App">
+                    <div class="project-category">Other</div>
+                </div>
+                <div class="project-details">
+                    <h3>Productivity App</h3>
+                    <p>A cross-platform mobile application designed to enhance productivity.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">React Native</span>
+                        <span class="tech-tag">Firebase</span>
+                        <span class="tech-tag">Redux</span>
+                    </div>
+                    <div class="project-actions">
+                        <div class="project-links">
+                            <button class="btn btn-secondary btn-sm edit-project" data-id="4">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm delete-project" data-id="4">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pagination">
+            <button><i class="fas fa-chevron-left"></i></button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </main>
+    
+    <!-- Add/Edit Project Modal -->
+    <div class="modal-bg" id="project-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modal-title">Add New Project</h2>
+                <button class="modal-close" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="project-form">
+                    <input type="hidden" id="project-id">
+                    
+                    <div class="form-group">
+                        <label for="project-title">Project Title *</label>
+                        <input type="text" id="project-title" name="project-title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project-description">Description *</label>
+                        <textarea id="project-description" name="project-description" required></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="project-category">Category *</label>
+                            <select id="project-category" name="project-category" required>
+                                <option value="">Select Category</option>
+                                <option value="web">Web Development</option>
+                                <option value="ai">AI & ML</option>
+                                <option value="blockchain">Blockchain</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="project-status">Status</label>
+                            <select id="project-status" name="project-status">
+                                <option value="completed">Completed</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="planned">Planned</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project-technologies">Technologies *</label>
+                        <div class="tag-input" id="tech-input">
+                            <input type="text" id="tech-input-field" placeholder="Add technology...">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="project-demo-url">Demo URL</label>
+                            <input type="url" id="project-demo-url" name="project-demo-url" placeholder="https://...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="project-github-url">GitHub URL</label>
+                            <input type="url" id="project-github-url" name="project-github-url" placeholder="https://github.com/...">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project-image">Project Image *</label>
+                        <input type="file" id="project-image" name="project-image" accept="image/*">
+                        <div class="image-preview">
+                            <div class="preview-container" id="image-preview">
+                                <div class="placeholder">
+                                    <i class="fas fa-image"></i>
+                                    <span>No image selected</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="cancel-btn">Cancel</button>
+                <button class="btn" id="save-btn">Save Project</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-bg" id="delete-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Confirm Deletion</h2>
+                <button class="modal-close" id="close-delete-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this project? This action cannot be undone.</p>
+                <input type="hidden" id="delete-project-id">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="cancel-delete">Cancel</button>
+                <button class="btn btn-danger" id="confirm-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!sessionStorage.getItem('isLoggedIn')) {
+                window.location.href = 'index.html';
+            }
+            
+            initProjectsPage();
+        });
+        
+        // Toggle sidebar on mobile
+        const toggleBtn = document.querySelector('.toggle-sidebar');
+        const sidebar = document.querySelector('.sidebar');
+        
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+        
+        // Handle responsive layout
+        function checkWidth() {
+            if (window.innerWidth <= 992) {
+                toggleBtn.style.display = 'flex';
+            } else {
+                toggleBtn.style.display = 'none';
+                sidebar.classList.remove('active');
+            }
+        }
+        
+        window.addEventListener('resize', checkWidth);
+        checkWidth();
+        
+        // Initialize projects page functionality
+        function initProjectsPage() {
+            // Search and filter functionality
+            const searchInput = document.getElementById('search-projects');
+            const filterCategory = document.getElementById('filter-category');
+            
+            // Project modal
+            const projectModal = document.getElementById('project-modal');
+            const deleteModal = document.getElementById('delete-modal');
+            const addProjectBtn = document.getElementById('add-project-btn');
+            const closeModalBtn = document.getElementById('close-modal');
+            const closeDeleteModalBtn = document.getElementById('close-delete-modal');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const cancelDeleteBtn = document.getElementById('cancel-delete');
+            const saveBtn = document.getElementById('save-btn');
+            const confirmDeleteBtn = document.getElementById('confirm-delete');
+            
+            const editProjectBtns = document.querySelectorAll('.edit-project');
+            const deleteProjectBtns = document.querySelectorAll('.delete-project');
+            
+            // Project form elements
+            const projectForm = document.getElementById('project-form');
+            const projectImageInput = document.getElementById('project-image');
+            const imagePreview = document.getElementById('image-preview');
+            const techInput = document.getElementById('tech-input');
+            const techInputField = document.getElementById('tech-input-field');
+            
+            // Search functionality
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const projectCards = document.querySelectorAll('.project-card');
+                
+                projectCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('p').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Filter functionality
+            filterCategory.addEventListener('change', function() {
+                const filterValue = this.value;
+                const projectCards = document.querySelectorAll('.project-card');
+                
+                projectCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Open modal to add new project
+            addProjectBtn.addEventListener('click', function() {
+                document.getElementById('modal-title').textContent = 'Add New Project';
+                projectForm.reset();
+                clearTechTags();
+                clearImagePreview();
+                document.getElementById('project-id').value = '';
+                projectModal.classList.add('active');
+            });
+            
+            // Close modal
+            closeModalBtn.addEventListener('click', function() {
+                projectModal.classList.remove('active');
+            });
+            
+            cancelBtn.addEventListener('click', function() {
+                projectModal.classList.remove('active');
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === projectModal) {
+                    projectModal.classList.remove('active');
+                }
+                if (e.target === deleteModal) {
+                    deleteModal.classList.remove('active');
+                }
+            });
+            
+            // Handle image preview
+            projectImageInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        imagePreview.innerHTML = `<img src="${e.target.result}" alt="Project Image Preview">`;
+                    };
+                    
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+            
+            // Handle tech tags
+            techInputField.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ',') {
+                    e.preventDefault();
+                    const tech = this.value.trim();
+                    if (tech) {
+                        addTechTag(tech);
+                        this.value = '';
+                    }
+                }
+            });
+            
+            function addTechTag(text) {
+                // Check if tag already exists
+                const existingTags = techInput.querySelectorAll('.tag');
+                for (let i = 0; i < existingTags.length; i++) {
+                    if (existingTags[i].querySelector('span').textContent === text) {
+                        return;
+                    }
+                }
+                
+                const tag = document.createElement('div');
+                tag.className = 'tag';
+                tag.innerHTML = `
+                    <span>${text}</span>
+                    <button type="button" class="tag-remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                tag.querySelector('.tag-remove').addEventListener('click', function() {
+                    tag.remove();
+                });
+                
+                techInput.insertBefore(tag, techInputField);
+            }
+            
+            function clearTechTags() {
+                const tags = techInput.querySelectorAll('.tag');
+                tags.forEach(tag => tag.remove());
+            }
+            
+            function clearImagePreview() {
+                imagePreview.innerHTML = `
+                    <div class="placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>No image selected</span>
+                    </div>
+                `;
+            }
+            
+            // Edit project functionality
+            editProjectBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const projectId = this.getAttribute('data-id');
+                    const projectCard = this.closest('.project-card');
+                    
+                    // Get project details from the card
+                    const title = projectCard.querySelector('h3').textContent;
+                    const description = projectCard.querySelector('p').textContent;
+                    const category = projectCard.getAttribute('data-category');
+                    const image = projectCard.querySelector('.project-image img').src;
+                    
+                    // Get tech tags
+                    const techTags = [];
+                    projectCard.querySelectorAll('.tech-tag').forEach(tag => {
+                        techTags.push(tag.textContent);
+                    });
+                    
+                    // Update modal title
+                    document.getElementById('modal-title').textContent = 'Edit Project';
+                    
+                    // Fill the form
+                    document.getElementById('project-id').value = projectId;
+                    document.getElementById('project-title').value = title;
+                    document.getElementById('project-description').value = description;
+                    document.getElementById('project-category').value = category;
+                    
+                    // Clear and add tech tags
+                    clearTechTags();
+                    techTags.forEach(tag => addTechTag(tag));
+                    
+                    // Update image preview
+                    imagePreview.innerHTML = `<img src="${image}" alt="Project Image Preview">`;
+                    
+                    // Show the modal
+                    projectModal.classList.add('active');
+                });
+            });
+            
+            // Save project
+            saveBtn.addEventListener('click', function() {
+                // Validate form
+                if (!projectForm.checkValidity()) {
+                    alert('Please fill out all required fields.');
+                    return;
+                }
+                
+                // Get tech tags
+                const techTags = [];
+                techInput.querySelectorAll('.tag span').forEach(span => {
+                    techTags.push(span.textContent);
+                });
+                
+                if (techTags.length === 0) {
+                    alert('Please add at least one technology.');
+                    return;
+                }
+                
+                // In a real application, you would send the data to the server
+                // For demo, just show a success message
+                alert('Project saved successfully!');
+                projectModal.classList.remove('active');
+                
+                // For demo purposes, update the project card if editing
+                const projectId = document.getElementById('project-id').value;
+                if (projectId) {
+                    updateProjectCard(projectId);
+                }
+            });
+            
+            function updateProjectCard(id) {
+                const projectCard = document.querySelector(`.project-card .edit-project[data-id="${id}"]`).closest('.project-card');
+                
+                // Update card content
+                projectCard.querySelector('h3').textContent = document.getElementById('project-title').value;
+                projectCard.querySelector('p').textContent = document.getElementById('project-description').value;
+                projectCard.setAttribute('data-category', document.getElementById('project-category').value);
+                
+                // Update image if a new one was selected
+                const imageInput = document.getElementById('project-image');
+                if (imageInput.files && imageInput.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        projectCard.querySelector('.project-image img').src = e.target.result;
+                    };
+                    
+                    reader.readAsDataURL(imageInput.files[0]);
+                }
+                
+                // Update category text
+                const categoryValue = document.getElementById('project-category').value;
+                let categoryText = '';
+                switch (categoryValue) {
+                    case 'web':
+                        categoryText = 'Web Development';
+                        break;
+                    case 'ai':
+                        categoryText = 'AI & ML';
+                        break;
+                    case 'blockchain':
+                        categoryText = 'Blockchain';
+                        break;
+                    case 'other':
+                        categoryText = 'Other';
+                        break;
+                }
+                projectCard.querySelector('.project-category').textContent = categoryText;
+                
+                // Update tech tags
+                const techStack = projectCard.querySelector('.tech-stack');
+                techStack.innerHTML = '';
+                
+                techInput.querySelectorAll('.tag span').forEach(span => {
+                    const tag = document.createElement('span');
+                    tag.className = 'tech-tag';
+                    tag.textContent = span.textContent;
+                    techStack.appendChild(tag);
+                });
+            }
+            
+            // Delete project functionality
+            deleteProjectBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const projectId = this.getAttribute('data-id');
+                    document.getElementById('delete-project-id').value = projectId;
+                    deleteModal.classList.add('active');
+                });
+            });
+            
+            closeDeleteModalBtn.addEventListener('click', function() {
+                deleteModal.classList.remove('active');
+            });
+            
+            cancelDeleteBtn.addEventListener('click', function() {
+                deleteModal.classList.remove('active');
+            });
+            
+            confirmDeleteBtn.addEventListener('click', function() {
+                const projectId = document.getElementById('delete-project-id').value;
+                
+                // In a real application, you would send a delete request to the server
+                // For demo, just remove the card from the DOM
+                const projectCard = document.querySelector(`.project-card .delete-project[data-id="${projectId}"]`).closest('.project-card');
+                projectCard.remove();
+                
+                alert('Project deleted successfully!');
+                deleteModal.classList.remove('active');
+            });
+        }
+    </script>
+</body>
+</html>
