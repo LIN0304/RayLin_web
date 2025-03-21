@@ -1,1 +1,118 @@
-$file:/users/raylin/desktop/personal-website/ai-demos/demo1.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant Demo - Ray's Personal Website</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/ai-demos.css">
+    <script src="../js/main.js" defer></script>
+    <script src="../js/ai-demo.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Ray Lin</h1>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../about.html">About</a></li>
+                    <li><a href="../projects.html">Projects</a></li>
+                    <li><a href="../blog/index.html">Blog</a></li>
+                    <li><a href="index.html" class="active">AI Demos</a></li>
+                    <li><a href="../contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <section class="demo-hero">
+            <div class="container">
+                <h2>AI Assistant Demo</h2>
+                <p>Interact with a conversational AI assistant capable of understanding and responding to a wide range of questions.</p>
+            </div>
+        </section>
+        
+        <section class="demo-interface">
+            <div class="container">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message bot">
+                            <div class="message-content">
+                                <p>Hello! I'm an AI assistant. How can I help you today?</p>
+                            </div>
+                        </div>
+                        <!-- More messages will be added here dynamically -->
+                    </div>
+                    
+                    <div class="chat-input">
+                        <form id="chat-form">
+                            <input type="text" id="user-input" placeholder="Type your message here...">
+                            <button type="submit" class="send-btn">Send</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="demo-info">
+                    <h3>About This Demo</h3>
+                    <p>This is a simulated AI assistant that demonstrates the capabilities of conversational AI. While it's not connected to a real AI backend in this demo, it shows the interface and interaction patterns typical of modern AI assistants.</p>
+                    
+                    <h3>Try Asking About:</h3>
+                    <ul>
+                        <li>General knowledge questions</li>
+                        <li>Technical explanations</li>
+                        <li>Creative writing suggestions</li>
+                        <li>Problem-solving assistance</li>
+                    </ul>
+                    
+                    <div class="demo-note">
+                        <p><strong>Note:</strong> In a live implementation, this would be connected to a real AI model capable of generating dynamic responses.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="tech-explanation">
+            <div class="container">
+                <h2>How It Works</h2>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <h3>Natural Language Processing</h3>
+                        <p>The assistant uses NLP to understand the meaning behind your questions and formulate coherent, contextually appropriate responses.</p>
+                    </div>
+                    <div class="tech-item">
+                        <h3>Machine Learning</h3>
+                        <p>Advanced machine learning models allow the assistant to learn from interactions and improve over time.</p>
+                    </div>
+                    <div class="tech-item">
+                        <h3>Knowledge Base</h3>
+                        <p>The assistant has access to a vast knowledge base that it can reference to provide accurate information.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ray Lin. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/hsu-jui-lin-50b82b216/" class="social-icon" target="_blank">
+                    <img src="https://cdn.simpleicons.org/linkedin" alt="LinkedIn">
+                    LinkedIn
+                </a>
+                <a href="https://x.com/RayLin_AI" class="social-icon" target="_blank">
+                    <img src="https://cdn.simpleicons.org/x" alt="X">
+                    X
+                </a>
+                <a href="https://t.me/RayLin_bnb" class="social-icon" target="_blank">
+                    <img src="https://cdn.simpleicons.org/telegram" alt="Telegram">
+                    Telegram
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
