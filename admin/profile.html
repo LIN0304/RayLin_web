@@ -1,1 +1,669 @@
-$file:/users/raylin/desktop/personal-website/admin/profile.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Ray Lin's Admin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --text-color: #333;
+            --light-text: #6c757d;
+            --background-color: #f5f7fa;
+            --sidebar-bg: #ffffff;
+            --sidebar-active: #e6f0ff;
+            --card-background: #fff;
+            --border-color: #e1e4e8;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --font-family: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 220px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-section-title {
+            text-transform: uppercase;
+            color: var(--light-text);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover {
+            background-color: rgba(230, 240, 255, 0.5);
+        }
+
+        .sidebar-menu a.active {
+            background-color: var(--sidebar-active);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .sidebar-menu i {
+            margin-right: 0.75rem;
+            font-size: 1.125rem;
+            width: 1.25rem;
+            text-align: center;
+            color: var(--light-text);
+        }
+
+        .sidebar-menu a.active i {
+            color: var(--primary-color);
+        }
+
+        .main-container {
+            flex: 1;
+            margin-left: 220px;
+            display: flex;
+        }
+
+        .profile-section {
+            flex: 0 0 40%;
+            border-right: 1px solid var(--border-color);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 1.25rem;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-role {
+            color: var(--primary-color);
+            margin-bottom: 1.25rem;
+            font-size: 0.9rem;
+        }
+
+        .avatar-button {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            border-radius: 4px;
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .avatar-button:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        .avatar-button i {
+            margin-right: 0.5rem;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 1rem;
+            width: 100%;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--light-text);
+            font-size: 0.875rem;
+        }
+
+        .social-links {
+            width: 100%;
+        }
+
+        .social-links-header {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .social-icon {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            color: white;
+        }
+
+        .linkedin .social-icon {
+            background-color: #0077b5;
+        }
+
+        .github .social-icon {
+            background-color: #333;
+        }
+
+        .twitter .social-icon {
+            background-color: #1da1f2;
+        }
+
+        .telegram .social-icon {
+            background-color: #0088cc;
+        }
+
+        .form-section {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .form-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: var(--font-family);
+            font-size: 0.9rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .social-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 1.5rem;
+        }
+
+        .form-actions {
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #3a7dca;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        .save-indicator {
+            display: none;
+            align-items: center;
+            color: #27ae60;
+            margin-right: auto;
+        }
+
+        .save-indicator.show {
+            display: flex;
+        }
+
+        .save-indicator i {
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>Ray Lin Admin</h1>
+        </div>
+        
+        <div class="sidebar-section">
+            <p class="sidebar-section-title">Main</p>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="gpts.html"><i class="fas fa-robot"></i> GPTs</a></li>
+                <li><a href="demos.html"><i class="fas fa-vial"></i> AI Demos</a></li>
+                <li><a href="blog.html"><i class="fas fa-blog"></i> Blog Posts</a></li>
+                <li><a href="projects.html"><i class="fas fa-project-diagram"></i> Projects</a></li>
+                <li><a href="experience.html"><i class="fas fa-briefcase"></i> Experience</a></li>
+            </ul>
+        </div>
+        
+        <div class="sidebar-section">
+            <p class="sidebar-section-title">Media</p>
+            <ul class="sidebar-menu">
+                <li><a href="media.html"><i class="fas fa-photo-video"></i> Media Library</a></li>
+                <li><a href="uploads.html"><i class="fas fa-upload"></i> Upload Files</a></li>
+            </ul>
+        </div>
+        
+        <div class="sidebar-section">
+            <p class="sidebar-section-title">Settings</p>
+            <ul class="sidebar-menu">
+                <li><a href="profile.html" class="active"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="site-settings.html"><i class="fas fa-cog"></i> Site Settings</a></li>
+            </ul>
+        </div>
+    </aside>
+    
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-avatar">
+                <img src="../images/raylin_x_profile_image.jpg" alt="Ray Lin" id="profile-preview">
+            </div>
+            
+            <h1 class="profile-name">Ray Lin</h1>
+            <p class="profile-role">Administrator</p>
+            
+            <button class="avatar-button" id="avatar-upload-btn">
+                <i class="fas fa-camera"></i> Change Avatar
+            </button>
+            <input type="file" id="avatar-upload" style="display: none;" accept="image/*">
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">GPTs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Blog Posts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">Experiences</div>
+                </div>
+            </div>
+            
+            <div class="social-links">
+                <h2 class="social-links-header">Social Links</h2>
+                <a href="#" class="social-link linkedin">
+                    <div class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </div>
+                    LinkedIn
+                </a>
+                <a href="#" class="social-link github">
+                    <div class="social-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    GitHub
+                </a>
+                <a href="#" class="social-link twitter">
+                    <div class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    Twitter
+                </a>
+                <a href="#" class="social-link telegram">
+                    <div class="social-icon">
+                        <i class="fab fa-telegram-plane"></i>
+                    </div>
+                    Telegram
+                </a>
+            </div>
+        </div>
+        
+        <!-- Form Section -->
+        <div class="form-section">
+            <h2 class="form-header">Personal Information</h2>
+            
+            <form id="profile-form">
+                <div class="form-group">
+                    <label class="form-label" for="first-name">First Name</label>
+                    <input type="text" id="first-name" name="first-name" class="form-control" value="Ray">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="last-name">Last Name</label>
+                    <input type="text" id="last-name" name="last-name" class="form-control" value="Lin">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" value="ray.lin@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="bio">Bio</label>
+                    <textarea id="bio" name="bio" class="form-control">I'm Ray Lin, a digital-age innovator born in OpenAI's labs. I fuse blockchain and AI mastery with a passion for decentralization, believing GPT-4.5 reigns supreme among non-inference models.</textarea>
+                </div>
+                
+                <h2 class="social-header">Social Links</h2>
+                
+                <div class="form-group">
+                    <label class="form-label" for="linkedin-url">LinkedIn URL</label>
+                    <input type="url" id="linkedin-url" name="linkedin-url" class="form-control" value="https://www.linkedin.com/in/hsu-jui-lin-50b82b216/">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="github-url">GitHub URL</label>
+                    <input type="url" id="github-url" name="github-url" class="form-control" value="https://github.com/LIN0304">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="twitter-url">Twitter URL</label>
+                    <input type="url" id="twitter-url" name="twitter-url" class="form-control" value="https://x.com/RayLin_AI">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="telegram-url">Telegram URL</label>
+                    <input type="url" id="telegram-url" name="telegram-url" class="form-control" value="">
+                </div>
+                
+                <div class="form-actions">
+                    <div class="save-indicator" id="save-indicator">
+                        <i class="fas fa-check-circle"></i> Profile updated successfully
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="cancel-btn">Cancel</button>
+                    <button type="button" class="btn" id="save-profile-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script to handle save changes -->
+    <script src="js/save-changes.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (!sessionStorage.getItem('isLoggedIn')) {
+                window.location.href = 'index.html';
+            }
+            
+            // Avatar upload functionality
+            const avatarUploadBtn = document.getElementById('avatar-upload-btn');
+            const avatarUpload = document.getElementById('avatar-upload');
+            const profilePreview = document.getElementById('profile-preview');
+            
+            // Profile form save
+            const saveProfileBtn = document.getElementById('save-profile-btn');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const saveIndicator = document.getElementById('save-indicator');
+            
+            // When user clicks the avatar button, trigger file input
+            avatarUploadBtn.addEventListener('click', function() {
+                avatarUpload.click();
+            });
+            
+            // When user selects a file, show preview and save
+            avatarUpload.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        // Update preview
+                        profilePreview.src = e.target.result;
+                        
+                        // In a real app, we would upload this to the server
+                        uploadAvatar(e.target.result);
+                    };
+                    
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+            
+            // Upload avatar to server
+            function uploadAvatar(avatarData) {
+                // In a real app, we would use AJAX to send to server
+                fetch('save-changes.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'update_avatar',
+                        avatarData: avatarData
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showSaveIndicator();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    // For demo, still show success
+                    showSaveIndicator();
+                });
+            }
+            
+            // Save profile form
+            saveProfileBtn.addEventListener('click', function() {
+                // Get form data
+                const form = document.getElementById('profile-form');
+                
+                const formData = {};
+                const inputs = form.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    formData[input.name] = input.value;
+                });
+                
+                // Send to server
+                fetch('save-changes.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        formId: 'profile-form',
+                        formData: formData
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update display with new values
+                        document.querySelector('.profile-name').textContent = formData['first-name'] + ' ' + formData['last-name'];
+                        
+                        // Show success indicator
+                        showSaveIndicator();
+                        
+                        // Update about.html page
+                        updateAboutPage(formData);
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    // For demo, still show success
+                    showSaveIndicator();
+                });
+            });
+            
+            // Update the about page with new profile data
+            function updateAboutPage(formData) {
+                fetch('save-changes.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'update_about_page',
+                        formData: formData,
+                        targetPath: '../about.html'
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('About page updated successfully');
+                })
+                .catch((error) => {
+                    console.error('Error updating about page:', error);
+                });
+            }
+            
+            // Show save indicator
+            function showSaveIndicator() {
+                saveIndicator.classList.add('show');
+                setTimeout(() => {
+                    saveIndicator.classList.remove('show');
+                }, 3000);
+            }
+            
+            // Cancel changes
+            cancelBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to discard your changes?')) {
+                    window.location.reload();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
